@@ -35,7 +35,7 @@ abstract class AbstractUserService implements UserServiceInterface
     private function validateTutorUser(TutorUser &$tutorUser)
     {
         $tutorUserOriginal = $tutorUser->user;
-        $tutorRoles = $tutorUserOriginal['realm_access']['roles'] ?? [];
+        $tutorRoles = $tutorUserOriginal['resource_access']['tutor-recruitment']['roles'] ?? [];
 
         if (empty($tutorRoles)) {
             Log::warning(__CLASS__ . '-' . __FUNCTION__ . ' Tutor user dont have tutor role , tutor user = ' . json_encode($tutorUser->user));
