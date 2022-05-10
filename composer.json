@@ -1,0 +1,27 @@
+{
+    "name": "tutor/id",
+    "description": "Tutor id",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hiep Tran",
+            "email": "hieptt@educa.vn"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tutor\\Id\\": "src"
+        },
+        "files": [
+            "helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tutor\\Id\\Providers\\TutorIdServiceProvider"
+            ]
+        }
+    }
+}
