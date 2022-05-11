@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Tutor\Id\Services\Contracts\UserServiceInterface;
+use Tutor\Id\Exceptions\TutorIdException;
 
 class TutorIdController extends Controllers
 {
@@ -26,6 +27,10 @@ class TutorIdController extends Controllers
 
     public function handleTutorIdCallback(Request $request)
     {
+        if ($this->isRequestLogout($request)) {
+            return $this->logout();
+        }
+
         try {
             $tutorUser = Socialite::driver(config('services.tutor-id.diver_name'))->user();
 
@@ -42,5 +47,16 @@ class TutorIdController extends Controllers
 
         $redirectAfterLoginFail = $this->userService->redirectWhenLoginFail();
         return $redirectAfterLoginFail;
+    }
+
+    private function isRequestLogout(Request $request)
+    {
+        $input = $request->all();
+        return empty($input);
+    }
+
+    private function logout()
+    {
+        return $this->userService->redirectWhenLogout();
     }
 }

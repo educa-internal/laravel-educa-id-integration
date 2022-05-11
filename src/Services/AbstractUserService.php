@@ -2,15 +2,17 @@
 
 namespace Tutor\Id\Services;
 
+use App\Exceptions\CustomException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\Types\Boolean;
+use Tutor\Id\Exceptions\TutorIdException;
 use Tutor\Id\Services\Contracts\UserServiceInterface;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
-use Tutor\Id\Services\Socialite\User as TutorUser;
+use Tutor\Id\Services\Socialite\TutorUser;
 
 abstract class AbstractUserService implements UserServiceInterface
 {
@@ -18,7 +20,7 @@ abstract class AbstractUserService implements UserServiceInterface
     {
         $validateTutorUser = $this->validateTutorUser($tutorUser);
         if (!$validateTutorUser) {
-            return null;
+            throw new TutorIdException(get_tutor_id_message('invalid_account'));
         }
 
         $systemUser = $this->getSystemUserFromTutorUser($tutorUser);
@@ -35,7 +37,7 @@ abstract class AbstractUserService implements UserServiceInterface
     private function validateTutorUser(TutorUser &$tutorUser)
     {
         $tutorUserOriginal = $tutorUser->user;
-        $tutorRoles = $tutorUserOriginal['resource_access']['tutor-recruitment']['roles'] ?? [];
+        $tutorRoles = $tutorUserOriginal['resource_access'][config('services.tutor-id.client_id')]['roles'] ?? [];
 
         if (empty($tutorRoles)) {
             Log::warning(__CLASS__ . '-' . __FUNCTION__ . ' Tutor user dont have tutor role , tutor user = ' . json_encode($tutorUser->user));
@@ -66,7 +68,7 @@ abstract class AbstractUserService implements UserServiceInterface
             $update = $this->updateSystemUserFromTutorUser($systemUser, $tutorUser);
             if (!$update) {
                 Log::warning(__CLASS__ . '-' . __FUNCTION__ . ' Update systerm user from tutor user fail , system user = ' . json_encode($systemUser) . ' , tutor user = ' . json_encode($tutorUser));
-                return null;
+                throw new TutorIdException(get_tutor_id_message('internal_error'));
             }
             $systemUser->refresh();
         }
@@ -82,8 +84,20 @@ abstract class AbstractUserService implements UserServiceInterface
         return redirect('/');
     }
 
-    public function redirectWhenLoginFail()
+    public function redirectWhenLoginFail($message)
     {
         return redirect('/');
     }
+
+    public function logout()
+    {
+        $urlLogout = sprintf(config('services.tutor-id.url_logout') . '?redirect_uri=%s', config('services.tutor-id.redirect'));
+        return redirect($urlLogout);
+    }
+
+    public function redirectWhenLogout()
+    {
+        return redirect('/');
+    }
+
 }
