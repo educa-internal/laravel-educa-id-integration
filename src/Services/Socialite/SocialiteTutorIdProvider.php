@@ -5,7 +5,7 @@ namespace Tutor\Id\Services\Socialite;
 use Illuminate\Support\Arr;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
-use Tutor\Id\Services\Socialite\User;
+use Tutor\Id\Services\Socialite\TutorUser;
 
 class SocialiteTutorIdProvider extends AbstractProvider implements ProviderInterface
 {
@@ -33,7 +33,7 @@ class SocialiteTutorIdProvider extends AbstractProvider implements ProviderInter
 
     protected function mapUserToObject(array $user)
     {
-        return (new User)->setRaw($user)->map([
+        return (new TutorUser)->setRaw($user)->map([
             'id' => Arr::get($user, 'sub'),
             'name' => Arr::get($user, 'name'),
             'nickname' => Arr::get($user, 'name'),

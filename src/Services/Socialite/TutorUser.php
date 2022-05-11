@@ -2,7 +2,7 @@
 
 namespace Tutor\Id\Services\Socialite;
 
-class User extends \Laravel\Socialite\Two\User
+class TutorUser extends \Laravel\Socialite\Two\User
 {
     public $systemRoles;
 
