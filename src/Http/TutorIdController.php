@@ -45,7 +45,7 @@ class TutorIdController extends Controllers
             Log::error($e);
         }
 
-        $redirectAfterLoginFail = $this->userService->redirectWhenLoginFail();
+        $redirectAfterLoginFail = $this->userService->redirectWhenLoginFail(trans('tutor_id::tutor_id.fail_login'));
         return $redirectAfterLoginFail;
     }
 
