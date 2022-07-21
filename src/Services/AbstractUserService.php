@@ -77,7 +77,7 @@ abstract class AbstractUserService implements UserServiceInterface
 
     abstract protected function compareSystemUserWithTutorUser(Model $systemUser, $tutorUser): ?bool;
 
-    abstract protected function updateSystemUserFromTutorUser(Model $systemUserr, $tutorUser): ?Model;
+    abstract protected function updateSystemUserFromTutorUser(Model $systemUser, $tutorUser): ?Model;
 
     public function redirectWhenLoginSuccess()
     {
