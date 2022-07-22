@@ -12,3 +12,4 @@ return [
         'url_logout' => env('TUTOR_ID_URL_LOGOUT')
     ]
 ];
+
