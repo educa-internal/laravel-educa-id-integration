@@ -34,7 +34,7 @@ abstract class AbstractUserService implements UserServiceInterface
         return $systemUser;
     }
 
-    private function validateTutorUser(TutorUser &$tutorUser)
+    public function validateTutorUser(TutorUser &$tutorUser)
     {
         $tutorUserOriginal = $tutorUser->user;
         $tutorRoles = $tutorUserOriginal['resource_access'][config('services.tutor-id.client_id')]['roles'] ?? [];
