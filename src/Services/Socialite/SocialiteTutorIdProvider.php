@@ -27,8 +27,7 @@ class SocialiteTutorIdProvider extends AbstractProvider implements ProviderInter
 
         $response = $this->getHttpClient()->post($tokenUrl, [
             'headers' => ['Accept' => 'application/json'],
-            'form_params' => $formParams,
-            'http_errors' => false
+            'form_params' => $formParams
         ]);
         $result = json_decode($response->getBody(), true);
 
@@ -49,8 +48,7 @@ class SocialiteTutorIdProvider extends AbstractProvider implements ProviderInter
         $response = $this->getHttpClient()->get($urlGetUserByToken, [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
-            ],
-            'http_errors' => false
+            ]
         ]);
         $result = json_decode($response->getBody(), true);
 
